@@ -51,6 +51,11 @@ def init_db():
 # Initialize the database
 init_db()
 
+# Home route
+@app.route('/')
+def home():
+    return "Welcome to the Ignite Student Convention API!"
+
 # Sample route for adding a school
 @app.route('/add_school', methods=['POST'])
 def add_school():
@@ -105,6 +110,36 @@ def add_event():
     conn.close()
     
     return jsonify({'message': 'Event added successfully'}), 200
+
+# Route for listing schools
+@app.route('/get_schools', methods=['GET'])
+def get_schools():
+    conn = sqlite3.connect('ignite_convention.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM schools')
+    schools = cursor.fetchall()
+    conn.close()
+    return jsonify(schools)
+
+# Route for listing students
+@app.route('/get_students', methods=['GET'])
+def get_students():
+    conn = sqlite3.connect('ignite_convention.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM students')
+    students = cursor.fetchall()
+    conn.close()
+    return jsonify(students)
+
+# Route for listing events
+@app.route('/get_events', methods=['GET'])
+def get_events():
+    conn = sqlite3.connect('ignite_convention.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM events')
+    events = cursor.fetchall()
+    conn.close()
+    return jsonify(events)
 
 # Run the Flask app
 if __name__ == '__main__':
